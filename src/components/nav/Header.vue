@@ -1,7 +1,10 @@
 <template>
   <div class="header">
     <img class="logo" alt="logo" src="../../assets/logo.png"  @click="to('/')"/>
-    <span class="title">服务管理平台{{frontVersion}}</span>
+    <div class="title">
+      <span>{{frontTitle}}</span>
+      <span class="version">{{frontVersion}}</span>
+    </div>
     <LoginUser />
   </div>
 </template>
@@ -10,6 +13,7 @@
 import Component from 'vue-class-component'
 import VueBase from '@/components/VueBase'
 import Version from '@/version'
+import Config from '@/config'
 import LoginUser from '@/components/auth/LoginUser'
 
 @Component({
@@ -18,6 +22,7 @@ import LoginUser from '@/components/auth/LoginUser'
   }
 })
 class Header extends VueBase {
+  frontTitle = Config.app.title
   frontVersion = Version.version
 }
 
@@ -41,8 +46,13 @@ export default Header
 .header .title {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: end;
   padding: 0px 5px;
   font-size: medium;
+}
+.header .title .version {
+  color: lightgray;
+  margin-left: 2px;
+  font-size: small;
 }
 </style>

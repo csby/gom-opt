@@ -61,7 +61,33 @@ const uri = {
   // 获取网站信息
   siteWebAppInfo: '/opt.api/site/app/info',
   // 上传网站
-  siteWebAppUpload: '/opt.api/site/app/upload'
+  siteWebAppUpload: '/opt.api/site/app/upload',
+
+  // 系统服务-自定义
+  // 获取服务列表
+  svcCustomList: '/opt.api/svc/custom/list',
+  // 添加服务
+  svcCustomAdd: '/opt.api/svc/custom/add',
+  // 更新服务
+  svcCustomMod: '/opt.api/svc/custom/mod',
+  // 删除服务
+  svcCustomDel: '/opt.api/svc/custom/del',
+  // 安装服务
+  svcCustomInstall: '/opt.api/svc/custom/install',
+  // 卸载服务
+  svcCustomUninstall: '/opt.api/svc/custom/uninstall',
+  // 启动服务
+  svcCustomStart: '/opt.api/svc/custom/start',
+  // 停止服务
+  svcCustomStop: '/opt.api/svc/custom/stop',
+  // 重启服务
+  svcCustomRestart: '/opt.api/svc/custom/restart',
+  // 获取服务日志文件列表
+  svcCustomLogFileList: '/opt.api/svc/custom/log/file/list',
+  // 下载服务日志文件: /opt.api/svc/custom/log/file/download/:path
+  svcCustomLogFileDownload: '/opt.api/svc/custom/log/file/download/',
+  // 查看服务日志文件: /opt.api/svc/custom/log/file/content/:path
+  svcCustomLogFileContent: '/opt.api/svc/custom/log/file/content/'
 }
 
 export default {

@@ -17,6 +17,16 @@
         <i class="el-icon-menu"></i>
         <span slot="title">控制面板</span>
       </el-menu-item>
+      <el-submenu index="/svc/custom">
+        <template slot="title">
+          <i class="el-icon-s-tools"></i>
+          <span>系统服务</span>
+        </template>
+        <el-menu-item index="/svc/custom">
+          <i class="el-icon-setting"></i>
+          <span slot="title">自定义</span>
+        </el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

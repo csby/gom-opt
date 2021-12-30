@@ -43,6 +43,10 @@ const routes = [
       {
         path: '',
         component: Dashboard
+      },
+      {
+        path: '/svc/custom',
+        component: () => import('../views/authorized/service/custom/Index')
       }
     ]
   },

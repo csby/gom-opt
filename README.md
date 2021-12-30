@@ -1,6 +1,8 @@
-# gwsf-opt
+# gom-opt
 
-## Project setup
+## website for [gom](https://github.com/csby/gom)
+
+### Project setup
 ```
 npm install
 ```

@@ -1,6 +1,6 @@
 const app = {
-  guid: '4D29EA5F748C4CFDA37434CE76A5E788',
-  title: '后台管理'
+  guid: 'F9062C756A4264B0522B0F100C325E17',
+  title: '操作系统管理器'
 }
 
 const api = {

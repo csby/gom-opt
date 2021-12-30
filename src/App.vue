@@ -12,4 +12,14 @@
     text-align: left;
     color: #2c3e50;
   }
+
+  .status-running {
+    color: #67C23A;
+  }
+  .status-stopped {
+    color: #F56C6C;
+  }
+  .status-uninstall {
+    color: #909399;
+  }
 </style>

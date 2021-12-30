@@ -61,7 +61,7 @@ export default Dashboard
 .dashboard {
   display: flex;
   align-items: flex-start;
-  padding-bottom: 5px;
+  padding: 6px;
 }
 
 .dashboard .fill {

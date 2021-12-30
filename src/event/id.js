@@ -14,7 +14,21 @@ const ids = {
   wsRootSiteUploadFile: 111,
   // 根站点-删除文件
   // data: {"name":"test.txt"}
-  wsRootSiteDeleteFile: 112
+  wsRootSiteDeleteFile: 112,
+
+  // 服务状态改变
+  // data: {"name":"example", "status": 0}
+  wsSvcStatusChanged: 1011,
+
+  // 添加自定义服务
+  // data: {"name":"example", "exec": "", "args": "", "systemName": "svc-example", "displayName": "自定义服务示例",  "description": "", "folder": "", "deployTime": "2021-12-29 08:52:53", "status": 0}
+  wsCustomSvcAdded: 1021,
+  // 更新自定义服务
+  // data: {"name":"example", "exec": "", "args": "", "systemName": "svc-example", "displayName": "自定义服务示例",  "description": "", "folder": "", "deployTime": "2021-12-29 08:52:53", "status": 0}
+  wsCustomSvcUpdated: 1022,
+  // 删除自定义服务
+  // data: {"name":"example"}
+  wsCustomSvcDeleted: 1023
 }
 
 export default {
