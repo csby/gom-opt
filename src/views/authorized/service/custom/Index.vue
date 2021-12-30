@@ -24,11 +24,11 @@
         <el-table-column type="expand">
           <div slot-scope="scope" class="cell-expand">
             <div>
-              <span>系统服务:</span>
-              <span>{{scope.row.systemName}}</span>
+              <span>服务名称:</span>
+              <span>{{scope.row.serviceName}}</span>
             </div>
             <div>
-              <span>服务名称:</span>
+              <span>项目名称:</span>
               <span>{{scope.row.name}}</span>
             </div>
             <div>
@@ -58,7 +58,7 @@
           </div>
         </el-table-column>
         <el-table-column
-            label="服务"
+            label="项目"
             prop="displayName" />
         <el-table-column label="状态" width="100px">
           <template slot-scope="scope">
@@ -204,7 +204,7 @@ class Index extends SocketBase {
       detail: ''
     },
     json: '{\n' +
-        '\t"name": "名称, 必填",\n' +
+        '\t"name": "项目名称, 必填",\n' +
         '\t"exec": "可执行程序, 必填",\n' +
         '\t"args": "程序启动参数, 可选",\n' +
         '\t"displayName": "显示名称, 可选",\n' +
@@ -357,7 +357,7 @@ class Index extends SocketBase {
         for (let index = 0; index < count; index++) {
           const item = this.info.items[index]
           if (item) {
-            if (data.name === item.systemName) {
+            if (data.name === item.serviceName) {
               item.status = data.status
               break
             }
