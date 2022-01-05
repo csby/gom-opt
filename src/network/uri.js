@@ -70,6 +70,8 @@ const uri = {
   svcCustomAdd: '/opt.api/svc/custom/add',
   // 更新服务
   svcCustomMod: '/opt.api/svc/custom/mod',
+  // 下载服务: /opt.api/svc/custom/download/:name
+  svcCustomDownload: '/opt.api/svc/custom/download/',
   // 删除服务
   svcCustomDel: '/opt.api/svc/custom/del',
   // 安装服务
@@ -87,7 +89,66 @@ const uri = {
   // 下载服务日志文件: /opt.api/svc/custom/log/file/download/:path
   svcCustomLogFileDownload: '/opt.api/svc/custom/log/file/download/',
   // 查看服务日志文件: /opt.api/svc/custom/log/file/content/:path
-  svcCustomLogFileContent: '/opt.api/svc/custom/log/file/content/'
+  svcCustomLogFileContent: '/opt.api/svc/custom/log/file/content/',
+
+  // 系统服务-tomcat
+  // 获取服务列表
+  svcTomcatList: '/opt.api/svc/tomcat/svc/list',
+  // 启动服务
+  svcTomcatStart: '/opt.api/svc/tomcat/svc/start',
+  // 停止服务
+  svcTomcatStop: '/opt.api/svc/tomcat/svc/stop',
+  // 重启服务
+  svcTomcatRestart: '/opt.api/svc/tomcat/svc/restart',
+  // 获取应用列表
+  svcTomcatAppList: '/opt.api/svc/tomcat/app/list',
+  // 下载应用程序: /opt.api/svc/tomcat/app/download/:name/:app
+  svcTomcatAppDownload: '/opt.api/svc/tomcat/app/download/',
+  // 上传应用程序
+  svcTomcatAppMod: '/opt.api/svc/tomcat/app/mod',
+  // 删除应用程序
+  svcTomcatAppDel: '/opt.api/svc/tomcat/app/del',
+  // 获取配置列表
+  svcTomcatCfgTree: '/opt.api/svc/tomcat/cfg/tree',
+  // 新建应用配置文件夹
+  svcTomcatCfgFolderAdd: '/opt.api/svc/tomcat/cfg/folder/add',
+  // 上传应用配置
+  svcTomcatCfgMod: '/opt.api/svc/tomcat/cfg/mod',
+  // 删除应用配置
+  svcTomcatCfgDel: '/opt.api/svc/tomcat/cfg/del',
+  // 查看应用配置文件: /opt.api/svc/tomcat/cfg/file/content/:name/:path
+  svcTomcatCfgView: '/opt.api/svc/tomcat/cfg/file/content/',
+  // 下载应用配置文件: /opt.api/svc/tomcat/cfg/file/download/:name/:path
+  svcTomcatCfgDownload: '/opt.api/svc/tomcat/cfg/file/download/',
+  // 获取服务日志列表
+  svcTomcatLogTree: '/opt.api/svc/tomcat/log/tree',
+  // 查看服务日志文件: /opt.api/svc/tomcat/log/file/content/:name/:path
+  svcTomcatLogView: '/opt.api/svc/tomcat/log/file/content/',
+  // 下载服务日志文件: /opt.api/svc/tomcat/log/file/download/:name/:path
+  svcTomcatLogDownload: '/opt.api/svc/tomcat/log/file/download/',
+  // 删除服务日志
+  svcTomcatLogDel: '/opt.api/svc/tomcat/log/del',
+
+  // 系统服务-其他
+  // 获取服务列表
+  svcOtherList: '/opt.api/svc/other/svc/list',
+  // 启动服务
+  svcOtherStart: '/opt.api/svc/other/svc/start',
+  // 停止服务
+  svcOtherStop: '/opt.api/svc/other/svc/stop',
+  // 重启服务
+  svcOtherRestart: '/opt.api/svc/other/svc/restart',
+
+  // 系统资源-磁盘
+  // 获取磁盘分区信息
+  monitorDiskUsageList: '/opt.api/monitor/disk/usage/list',
+
+  // 系统资源-网络
+  // 获取网卡信息
+  monitorNetworkInterfaceList: '/opt.api/monitor/network/interface/list',
+  // 获取网卡吞吐量
+  monitorNetworkThroughputList: '/opt.api/monitor/network/throughput/list'
+
 }
 
 export default {

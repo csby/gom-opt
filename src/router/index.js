@@ -47,6 +47,22 @@ const routes = [
       {
         path: '/svc/custom',
         component: () => import('../views/authorized/service/custom/Index')
+      },
+      {
+        path: '/svc/tomcat',
+        component: () => import('../views/authorized/service/tomcat/Index')
+      },
+      {
+        path: '/svc/other',
+        component: () => import('../views/authorized/service/other/Index')
+      },
+      {
+        path: '/monitor/disk/partition',
+        component: () => import('../views/authorized/monitor/disk/Index')
+      },
+      {
+        path: '/monitor/network/interface',
+        component: () => import('../views/authorized/monitor/network/Index')
       }
     ]
   },

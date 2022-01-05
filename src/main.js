@@ -6,9 +6,11 @@ import Evt from '@/event/bus'
 import App from './App.vue'
 import router from './router'
 import 'element-ui/lib/theme-chalk/index.css'
+import TrendChart from 'vue-trend-chart'
 
 Vue.use(VueClipboard)
 Vue.use(ElementUI)
+Vue.use(TrendChart)
 
 Vue.prototype.$msg = ElementUI.Message
 Vue.prototype.$notify = ElementUI.Notification

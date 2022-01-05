@@ -15,8 +15,22 @@
              :default-active="defaultActive">
       <el-menu-item index="/">
         <i class="el-icon-menu"></i>
-        <span slot="title">控制面板</span>
+        <span slot="title">服务面板</span>
       </el-menu-item>
+      <el-submenu index="/monitor/disk/partition">
+        <template slot="title">
+          <i class="el-icon-monitor"></i>
+          <span>系统资源</span>
+        </template>
+        <el-menu-item index="/monitor/disk/partition">
+          <i class="el-icon-coin"></i>
+          <span slot="title">磁盘</span>
+        </el-menu-item>
+        <el-menu-item index="/monitor/network/interface">
+          <i class="el-icon-set-up"></i>
+          <span slot="title">网络</span>
+        </el-menu-item>
+      </el-submenu>
       <el-submenu index="/svc/custom">
         <template slot="title">
           <i class="el-icon-s-tools"></i>
@@ -25,6 +39,14 @@
         <el-menu-item index="/svc/custom">
           <i class="el-icon-setting"></i>
           <span slot="title">自定义</span>
+        </el-menu-item>
+        <el-menu-item index="/svc/tomcat">
+          <i class="el-icon-setting"></i>
+          <span slot="title">tomcat</span>
+        </el-menu-item>
+        <el-menu-item index="/svc/other">
+          <i class="el-icon-setting"></i>
+          <span slot="title">其他</span>
         </el-menu-item>
       </el-submenu>
     </el-menu>

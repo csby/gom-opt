@@ -1,23 +1,19 @@
 <template>
-  <div>
-    <div class="header">
-      <i class="el-icon-setting"></i>
-      <span>自定义服务</span>
-      <el-badge class="badge" type="info" :value="itemCount" v-if="itemCount > 0"/>
-      <div>
-        <el-tooltip placement="left">
-          <div slot="content">
-            <span>刷新</span>
-          </div>
-          <el-button type="text" icon="el-icon-refresh" @click="doGetList"/>
-        </el-tooltip>
-      </div>
-    </div>
-    <div class="table">
+  <svcPage title="自定义服务" :count="itemCount">
+    <template slot="button">
+      <el-tooltip placement="left">
+        <div slot="content">
+          <span>刷新</span>
+        </div>
+        <el-button type="text" icon="el-icon-refresh" @click="doGetList"/>
+      </el-tooltip>
+    </template>
+    <div class="table" slot-scope="page">
       <el-table v-loading="info.loading"
                 aelement-loading-text="加载中..."
                 element-loading-spinner="el-icon-loading"
                 size="small"
+                :max-height="page.client - page.top - page.head"
                 :data="info.items"
                 :border="true"
                 :stripe="true">
@@ -67,12 +63,8 @@
             <span v-else class="status-uninstall">未安装</span>
           </template>
         </el-table-column>
-        <el-table-column width="165px">
-          <template slot="header">
-            <el-button type="text" size="small" @click="add.visible = true">添加新服务</el-button>
-          </template>
+        <el-table-column label="操作" width="95px">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="doMod(scope.row)">更新</el-button>
             <template v-if="scope.row.status === 0">
               <el-button type="text" size="small" @click="doAction(scope.row.name, act.install)">安装</el-button>
               <el-popconfirm :title="'确定要删除服务(' + scope.row.displayName + ')吗？'"
@@ -88,6 +80,19 @@
               <el-button type="text" size="small" @click="doAction(scope.row.name, act.start)">启动</el-button>
               <el-button type="text" size="small" @click="doAction(scope.row.name, act.uninstall)">卸载</el-button>
             </template>
+          </template>
+        </el-table-column>
+        <el-table-column width="125px">
+          <template slot="header">
+            <el-button type="text" size="small" @click="add.visible = true">添加新服务</el-button>
+          </template>
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="doMod(scope.row)">更新</el-button>
+            <a :href="toSvcDownloadUrl(scope.row.name)" target="_blank">
+              <el-button type="text" class="btn" size="small" >
+                <span>下载</span>
+              </el-button>
+            </a>
             <el-button type="text" size="small" @click="doGetLogFileList(scope.row.name, scope.row.displayName)">日志</el-button>
           </template>
         </el-table-column>
@@ -97,106 +102,109 @@
                 <div class="error-summary">{{error.summary}}</div>
                 <div class="error-detail">{{error.detail}}</div>
             </span>
-            <span v-else>暂无数据</span>
+          <span v-else>暂无数据</span>
         </template>
       </el-table>
-    </div>
 
-    <div>
-      <fileUpload v-model="add.visible"
-                  width="500px"
-                  labelWidth="60px"
-                  title="上传并安装新的自定义系统服务"
-                  :uri="add.uri">
-        <div>
+      <div>
+        <fileUpload v-model="add.visible"
+                    width="500px"
+                    labelWidth="60px"
+                    title="上传并安装新的自定义系统服务"
+                    :uri="add.uri">
           <div>
-            <span>根目录中必须包含服务信息文件(info.json)</span>
-          </div>
-          <pre>{{info.json}}</pre>
-        </div>
-      </fileUpload>
-
-      <fileUpload v-model="mod.visible"
-                  width="580px"
-                  labelWidth="100px"
-                  :title="'上传并更新自定义系统服务: ' + mod.displayName"
-                  :forms="mod.forms"
-                  :uri="mod.uri">
-        <el-form-item label="目标服务名称">
-          <el-input v-model="mod.forms[0].value" :readonly="true"/>
-        </el-form-item>
-        <div>
-          <div>
-            <span>根目录中必须包含服务信息文件(info.json)</span>
-          </div>
-          <pre>{{info.json}}</pre>
-        </div>
-      </fileUpload>
-
-      <el-drawer class="drawer" direction="rtl" size="500px"
-                 :append-to-body="true"
-                 :destroy-on-close="true"
-                 :visible.sync="log.visible">
-        <div slot="title" class="drawer-header">
-          <i class="el-icon-files"></i>
-          <span>日志文件列表 [{{log.displayName}}]</span>
-          <el-tooltip placement="left">
-            <div slot="content">
-              <span>刷新</span>
+            <div>
+              <span>根目录中必须包含服务信息文件(info.json)</span>
             </div>
-            <el-button type="text" icon="el-icon-refresh" @click="doGetLogFileList(log.name, log.displayName)"/>
-          </el-tooltip>
-        </div>
-        <div class="drawer-body table">
-          <el-table v-loading="log.loading"
-                    aelement-loading-text="加载中..."
-                    element-loading-spinner="el-icon-loading"
-                    size="small"
-                    :data="log.items"
-                    :border="true"
-                    :stripe="true">
-            <el-table-column
-                label="文件名称"
-                prop="name" />
-            <el-table-column
-                label="文件大小"
-                prop="sizeText"
-                width="105px" />
-            <el-table-column
-                label="操作"
-                width="95px" >
-              <template slot-scope="scope" class="scope">
-                <a :href="toViewerUrl(scope.row.path)" target="_blank">
-                  <el-button type="text" class="btn" size="small" >
-                    <span>查看</span>
-                  </el-button>
-                </a>
-                <a :href="toDownloadUrl(scope.row.path)" target="_blank">
-                  <el-button type="text" class="btn" size="small" >
-                    <span>下载</span>
-                  </el-button>
-                </a>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-drawer>
+            <pre>{{info.json}}</pre>
+          </div>
+        </fileUpload>
+
+        <fileUpload v-model="mod.visible"
+                    width="580px"
+                    labelWidth="100px"
+                    :title="'上传并更新自定义系统服务: ' + mod.displayName"
+                    :forms="mod.forms"
+                    :uri="mod.uri">
+          <el-form-item label="目标服务名称">
+            <el-input v-model="mod.forms[0].value" :readonly="true"/>
+          </el-form-item>
+          <div>
+            <div>
+              <span>根目录中必须包含服务信息文件(info.json)</span>
+            </div>
+            <pre>{{info.json}}</pre>
+          </div>
+        </fileUpload>
+
+        <el-drawer class="drawer" direction="rtl" size="500px"
+                   :append-to-body="true"
+                   :destroy-on-close="true"
+                   :visible.sync="log.visible">
+          <div slot="title" class="drawer-header">
+            <i class="el-icon-files"></i>
+            <span>日志文件列表 [{{log.displayName}}]</span>
+            <el-tooltip placement="left">
+              <div slot="content">
+                <span>刷新</span>
+              </div>
+              <el-button type="text" icon="el-icon-refresh" @click="doGetLogFileList(log.name, log.displayName)"/>
+            </el-tooltip>
+          </div>
+          <div class="drawer-body table">
+            <el-table v-loading="log.loading"
+                      aelement-loading-text="加载中..."
+                      element-loading-spinner="el-icon-loading"
+                      size="small"
+                      :data="log.items"
+                      :border="true"
+                      :stripe="true">
+              <el-table-column
+                  label="文件名称"
+                  prop="name" />
+              <el-table-column
+                  label="文件大小"
+                  prop="sizeText"
+                  width="105px" />
+              <el-table-column
+                  label="操作"
+                  width="95px" >
+                <template slot-scope="scope" class="scope">
+                  <a :href="toViewerUrl(scope.row.path)" target="_blank">
+                    <el-button type="text" class="btn" size="small" >
+                      <span>查看</span>
+                    </el-button>
+                  </a>
+                  <a :href="toDownloadUrl(scope.row.path)" target="_blank">
+                    <el-button type="text" class="btn" size="small" >
+                      <span>下载</span>
+                    </el-button>
+                  </a>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-drawer>
+      </div>
     </div>
-  </div>
+  </svcPage>
 </template>
 
 <script>
 import Component from 'vue-class-component'
 import SocketBase from '@/components/SocketBase'
 import FileUpload from '@/components/dlg/FileUpload'
+import SvcPage from '@/components/svc/Page'
 
 @Component({
   components: {
-    fileUpload: FileUpload
+    fileUpload: FileUpload,
+    svcPage: SvcPage
   }
 })
 class Index extends SocketBase {
   info = {
+    port: false,
     loading: false,
     items: [],
     error: {
@@ -253,6 +261,7 @@ class Index extends SocketBase {
   protocol = document.location.protocol
   host = this.$db.get(this.$db.keys.host)
   token = this.$db.get(this.$db.keys.token)
+  svcDownloadUri = this.$uris.svcCustomDownload
   downloadUri = this.$uris.svcCustomLogFileDownload
   viewerUri = this.$uris.svcCustomLogFileContent
 
@@ -266,6 +275,10 @@ class Index extends SocketBase {
     } else {
       return false
     }
+  }
+
+  toSvcDownloadUrl (name) {
+    return this.protocol + '//' + this.host + this.svcDownloadUri + name + '?token=' + this.token
   }
 
   toDownloadUrl (path) {
@@ -408,34 +421,6 @@ export default Index
 </script>
 
 <style scoped>
-  .header {
-    display: flex;
-    align-items: center;
-    height: 25px;
-    padding: 0px 8px;
-    background-color: #f8f8f8;
-  }
-  .header /deep/ .el-button {
-    padding: 0px 2px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-size: medium;
-  }
-  .header :not(:first-child) {
-    margin-left: 3px;
-  }
-  .header i:first-child {
-    margin-top: 2px;
-  }
-  .header div:last-child {
-    flex: 1;
-    text-align: right;
-  }
-  .badge {
-    padding: 0;
-    margin-top: 3px;
-  }
-
   .table {
   }
   .table /deep/ .el-table th.el-table__cell {

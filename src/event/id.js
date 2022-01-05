@@ -28,7 +28,31 @@ const ids = {
   wsCustomSvcUpdated: 1022,
   // 删除自定义服务
   // data: {"name":"example"}
-  wsCustomSvcDeleted: 1023
+  wsCustomSvcDeleted: 1023,
+
+  // 添加tomcat应用
+  // data: {"name":"example", "app": ""}
+  wsTomcatAppAdded: 1031,
+  // 更新tomcat应用
+  // data: {"name":"example", "app": ""}
+  wsTomcatAppUpdated: 1032,
+  // 删除tomcat应用
+  // data: {"name":"example", "app": ""}
+  wsTomcatAppDeleted: 1033,
+
+  // 添加tomcat配置
+  // data: {"name":"example"}
+  wsTomcatCfgAdded: 1041,
+  // 更新tomcat配置
+  // data: {"name":"example"}
+  wsTomcatCfgUpdated: 1042,
+  // 删除tomcat配置
+  // data: {"name":"example"}
+  wsTomcatCfgDeleted: 1043,
+
+  // 系统资源-网络
+  // data: {"name":"eth0", "flow": {"time": "2022-01-05 12:19:42","bytesSpeedSent": 4230,"bytesSpeedRecv": 9164,"bytesSpeedSentText": "4.1Kbps","bytesSpeedRecvText": "8.9Kbps"}}
+  wsNetworkThroughput: 2011
 }
 
 export default {
