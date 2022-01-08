@@ -63,6 +63,14 @@ const routes = [
       {
         path: '/monitor/network/interface',
         component: () => import('../views/authorized/monitor/network/Index')
+      },
+      {
+        path: '/monitor/cpu/usage',
+        component: () => import('../views/authorized/monitor/cpu/Index')
+      },
+      {
+        path: '/port/fwd/proxy',
+        component: () => import('../views/authorized/proxy/Index')
       }
     ]
   },

@@ -4,9 +4,10 @@
       <i :class="icon"></i>
       <span>{{title}}</span>
       <el-badge class="badge" type="info" :value="itemCount" v-if="itemCount > 0"/>
+      <slot name="info" />
       <div>
         <slot name="button" :action="doGetList"/>
-        <el-tooltip placement="left">
+        <el-tooltip placement="left" v-show="isNotNullOrEmpty(uri)">
           <div slot="content">
             <span>刷新</span>
           </div>
@@ -14,7 +15,7 @@
         </el-tooltip>
       </div>
     </div>
-    <div class="table">
+    <div class="table" v-show="isNotNullOrEmpty(uri)">
       <el-table v-loading="info.loading"
                 aelement-loading-text="加载中..."
                 element-loading-spinner="el-icon-loading"
@@ -37,6 +38,12 @@
           <span v-else>暂无数据</span>
         </template>
       </el-table>
+    </div>
+    <div>
+      <slot name="custom"
+            :client="heights.client"
+            :top="heights.top"
+            :head="heights.head"/>
     </div>
   </div>
 </template>

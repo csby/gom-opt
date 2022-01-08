@@ -52,7 +52,39 @@ const ids = {
 
   // 系统资源-网络
   // data: {"name":"eth0", "flow": {"time": "2022-01-05 12:19:42","bytesSpeedSent": 4230,"bytesSpeedRecv": 9164,"bytesSpeedSentText": "4.1Kbps","bytesSpeedRecvText": "8.9Kbps"}}
-  wsNetworkThroughput: 2011
+  wsNetworkThroughput: 2011,
+
+  // 系统资源-CPU
+  // data: {"time": "2022-01-05 12:19:42","usage": 35.7}}
+  wsCpuUsage: 2012,
+
+  // 反向代理服务状态信息
+  // data: {"status":1,"startTime":null,"error":""}
+  wsReviseProxyServiceStatus: 3001,
+  // 反向代理连接已打开
+  // data:
+  wsReviseProxyConnectionOpen: 3002,
+  // 反向代理连接已关闭
+  // data:
+  wsReviseProxyConnectionShut: 3003,
+  // 反向代理添加服务器
+  // data: {"id":"6619850aec7340788f43eb6075d9dc91","name":"http","disable":false,"tls":false,"ip":"","port":"80"}
+  wsReviseProxyServerAdd: 3011,
+  // 反向代理删除服务器
+  // data: {"id":"b0962e13f8734cd9b844556ffd7706ac"}
+  wsReviseProxyServerDel: 3012,
+  // 反向代理修改服务器
+  // data: {"id":"6619850aec7340788f43eb6075d9dc91","name":"http","disable":true,"tls":true,"ip":"","port":"80"}
+  wsReviseProxyServerMod: 3013,
+  // 反向代理添加目标地址
+  // data: {"serverId":"99b1d5cfba734176a68f1521d704f022","target":{"id":"f7bc87bb3c3d4c0baa1f77028b8a2924","domain":"tt","ip":"22","port":"24","version":0,"disable":false}}
+  wsReviseProxyTargetAdd: 3021,
+  // 反向代理删除目标地址
+  // data: {"serverId":"99b1d5cfba734176a68f1521d704f022","targetId":"f7bc87bb3c3d4c0baa1f77028b8a2924"}
+  wsReviseProxyTargetDel: 3022,
+  // 反向代理修改目标地址
+  // data: {"serverId":"99b1d5cfba734176a68f1521d704f022","target":{"id":"76cacef32eac4ebe9d8aa575b28f409b","domain":"test.com","ip":"172.16.99.70","port":"443","version":1,"disable":false}}
+  wsReviseProxyTargetMod: 3023
 }
 
 export default {

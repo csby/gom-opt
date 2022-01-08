@@ -30,6 +30,10 @@
           <i class="el-icon-set-up"></i>
           <span slot="title">网络</span>
         </el-menu-item>
+        <el-menu-item index="/monitor/cpu/usage">
+          <i class="el-icon-cpu"></i>
+          <span slot="title">处理器</span>
+        </el-menu-item>
       </el-submenu>
       <el-submenu index="/svc/custom">
         <template slot="title">
@@ -49,6 +53,10 @@
           <span slot="title">其他</span>
         </el-menu-item>
       </el-submenu>
+      <el-menu-item index="/port/fwd/proxy">
+        <i class="el-icon-share"></i>
+        <span slot="title">端口转发</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

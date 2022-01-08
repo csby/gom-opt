@@ -147,7 +147,43 @@ const uri = {
   // 获取网卡信息
   monitorNetworkInterfaceList: '/opt.api/monitor/network/interface/list',
   // 获取网卡吞吐量
-  monitorNetworkThroughputList: '/opt.api/monitor/network/throughput/list'
+  monitorNetworkThroughputList: '/opt.api/monitor/network/throughput/list',
+
+  // 系统资源-CPU
+  // 获取CPU使用率
+  monitorCpuUsageList: '/opt.api/monitor/cpu/usage/list',
+
+  // 反向代理
+  // 获取服务设置
+  proxyServiceSettingGet: '/opt.api/proxy/service/setting/get',
+  // 修改服务设置
+  proxyServiceSettingSet: '/opt.api/proxy/service/setting/set',
+  // 获取服务状态
+  proxyServiceStatus: '/opt.api/proxy/service/status',
+  // 启动服务
+  proxyServiceStart: '/opt.api/proxy/service/start',
+  // 停止服务
+  proxyServiceStop: '/opt.api/proxy/service/stop',
+  // 重启服务
+  proxyServiceRestart: '/opt.api/proxy/service/restart',
+  // 获取连接列表
+  proxyConnList: '/opt.api/proxy/conn/list',
+  // 获取服务器列表
+  proxyServerList: '/opt.api/proxy/server/list',
+  // 添加服务器
+  proxyServerAdd: '/opt.api/proxy/server/add',
+  // 删除服务器
+  proxyServerDel: '/opt.api/proxy/server/del',
+  // 修改服务器
+  proxyServerMod: '/opt.api/proxy/server/mod',
+  // 获取目标地址列表
+  proxyTargetList: '/opt.api/proxy/target/list',
+  // 添加目标地址
+  proxyTargetAdd: '/opt.api/proxy/target/add',
+  // 删除目标地址
+  proxyTargetDel: '/opt.api/proxy/target/del',
+  // 修改目标地址
+  proxyTargetMod: '/opt.api/proxy/target/mod'
 
 }
 
