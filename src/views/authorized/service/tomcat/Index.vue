@@ -92,7 +92,7 @@
         </template>
       </el-table>
 
-      <el-drawer class="drawer" direction="rtl" size="680px"
+      <el-drawer class="drawer" direction="rtl" size="720px"
                  :show-close="false"
                  :append-to-body="true"
                  :destroy-on-close="true"

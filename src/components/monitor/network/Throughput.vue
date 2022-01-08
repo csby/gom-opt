@@ -116,8 +116,8 @@ class Throughput extends SocketBase {
         for (let i = 0; i < c; i++) {
           const item = flows[i]
           times.push(item.time)
-          sents.push(item.bytesSpeedSent)
-          recvs.push(item.bytesSpeedRecv)
+          sents.push(8 * item.bytesSpeedSent)
+          recvs.push(8 * item.bytesSpeedRecv)
         }
       }
     } else {
@@ -129,8 +129,8 @@ class Throughput extends SocketBase {
     this.info.items[1].data = sents
     this.info.curCount = times.length
     if (this.info.curCount > 0) {
-      this.info.curRecv = recvs[this.info.curCount - 1]
-      this.info.curSent = sents[this.info.curCount - 1]
+      this.info.curRecv = this.fmtValue(recvs[this.info.curCount - 1])
+      this.info.curSent = this.fmtValue(sents[this.info.curCount - 1])
     }
   }
 
@@ -160,10 +160,10 @@ class Throughput extends SocketBase {
       return
     }
 
-    this.info.curRecv = data.flow.bytesSpeedRecvText
-    this.info.curSent = data.flow.bytesSpeedSentText
-    this.info.items[0].data.push(data.flow.bytesSpeedRecv)
-    this.info.items[1].data.push(data.flow.bytesSpeedSent)
+    this.info.curRecv = this.fmtValue(8 * data.flow.bytesSpeedRecv)
+    this.info.curSent = this.fmtValue(8 * data.flow.bytesSpeedSent)
+    this.info.items[0].data.push(8 * data.flow.bytesSpeedRecv)
+    this.info.items[1].data.push(8 * data.flow.bytesSpeedSent)
     if (this.info.items[0].data.length > this.info.maxCount) {
       this.info.items[0].data.shift()
     }

@@ -57,7 +57,8 @@
           <div v-else style="display: flex; align-items: center ;width: 100%;">
             <i class="el-icon-document"></i>
             <span style="flex: 1; margin-left: 6px;">{{data.name}}</span>
-            <span style="color: #8c939d; padding-right: 8px; font-size: small;">{{data.sizeText}}</span>
+            <span style="color: #7c635d; padding-right: 8px; font-size: small;">{{data.sizeText}}</span>
+            <span style="color: #8c939d; padding-right: 8px; font-size: small;">{{data.modTime}}</span>
           </div>
         </div>
       </el-tree>
