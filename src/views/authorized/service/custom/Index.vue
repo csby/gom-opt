@@ -44,6 +44,10 @@
               <span>{{scope.row.deployTime}}</span>
             </div>
             <div>
+              <span>程序作者:</span>
+              <span>{{scope.row.author}}</span>
+            </div>
+            <div>
               <span>执行程序:</span>
               <span>{{scope.row.exec}}</span>
             </div>
@@ -56,6 +60,9 @@
         <el-table-column
             label="项目"
             prop="displayName" />
+        <el-table-column label="版本号"
+                         prop="version"
+                         width="100px"/>
         <el-table-column label="状态" width="100px">
           <template slot-scope="scope">
             <span v-if="scope.row.status === 1" class="status-running">运行中</span>
@@ -217,6 +224,8 @@ class Index extends SocketBase {
         '\t"args": "程序启动参数, 可选",\n' +
         '\t"displayName": "显示名称, 可选",\n' +
         '\t"description": "描述信息, 可选"\n' +
+        '\t"version": "版本号, 可选"\n' +
+        '\t"author": "作者, 可选"\n' +
         '}'
   }
 
@@ -391,6 +400,8 @@ class Index extends SocketBase {
               item.displayName = data.displayName
               item.description = data.description
               item.deployTime = data.deployTime
+              item.version = data.version
+              item.author = data.author
               break
             }
           }
