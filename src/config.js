@@ -4,7 +4,7 @@ const app = {
 }
 
 const api = {
-  dev: 'http://127.0.0.1:8085',
+  dev: 'http://192.168.123.201:8085',
   pro: ''
 }
 

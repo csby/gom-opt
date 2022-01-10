@@ -31,11 +31,15 @@
               <span>显示名称:</span>
               <span>{{scope.row.displayName}}</span>
             </div>
-            <div>
+            <div v-if="isNotNullOrEmpty(scope.row.description)">
               <span>描述信息:</span>
               <span>{{scope.row.description}}</span>
             </div>
-            <div>
+            <div v-if="isNotNullOrEmpty(scope.row.remark)">
+              <span>备注信息:</span>
+              <span>{{scope.row.remark}}</span>
+            </div>
+            <div v-if="isNotNullOrEmpty(scope.row.folder)">
               <span>物理目录:</span>
               <span>{{scope.row.folder}}</span>
             </div>
@@ -43,7 +47,7 @@
               <span>发布时间:</span>
               <span>{{scope.row.deployTime}}</span>
             </div>
-            <div>
+            <div v-if="isNotNullOrEmpty(scope.row.author)">
               <span>程序作者:</span>
               <span>{{scope.row.author}}</span>
             </div>
@@ -51,10 +55,19 @@
               <span>执行程序:</span>
               <span>{{scope.row.exec}}</span>
             </div>
-            <div>
+            <div v-if="isNotNullOrEmpty(scope.row.args)">
               <span>启动参数:</span>
               <span>{{scope.row.args}}</span>
             </div>
+            <template  v-if="scope.row.prepares">
+              <div v-if="scope.row.prepares.length > 0">
+                <span>预执行程序及参数:</span>
+                <div v-for="(item, index) in scope.row.prepares" :key="index">
+                  <span>({{index}})</span>
+                  <span>{{item.exec}} {{item.args}}</span>
+                </div>
+              </div>
+            </template>
           </div>
         </el-table-column>
         <el-table-column
@@ -223,9 +236,16 @@ class Index extends SocketBase {
         '\t"exec": "可执行程序, 必填",\n' +
         '\t"args": "程序启动参数, 可选",\n' +
         '\t"displayName": "显示名称, 可选",\n' +
-        '\t"description": "描述信息, 可选"\n' +
-        '\t"version": "版本号, 可选"\n' +
-        '\t"author": "作者, 可选"\n' +
+        '\t"description": "描述信息, 可选",\n' +
+        '\t"remark": "备注信息, 可选",\n' +
+        '\t"version": "版本号, 可选",\n' +
+        '\t"author": "作者, 可选",\n' +
+        '\t"prepares": [  // 预执行程序(主程序运行前执行), 可选\n' +
+        '\t\t{\n' +
+        '\t\t\t"exec": "npm",\n' +
+        '\t\t\t"args": "-i"\n' +
+        '\t\t}\n' +
+        '\t]\n' +
         '}'
   }
 
