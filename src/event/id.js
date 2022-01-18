@@ -58,6 +58,10 @@ const ids = {
   // data: {"time": "2022-01-05 12:19:42","usage": 35.7}}
   wsCpuUsage: 2012,
 
+  // 系统资源-内存
+  // data: {"time": "2022-01-05 12:19:42","usage": 50, "total": 17179869184, "used": 8589934592}}
+  wsMemUsage: 2013,
+
   // 反向代理服务状态信息
   // data: {"status":1,"startTime":null,"error":""}
   wsReviseProxyServiceStatus: 3001,

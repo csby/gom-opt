@@ -153,6 +153,10 @@ const uri = {
   // 获取CPU使用率
   monitorCpuUsageList: '/opt.api/monitor/cpu/usage/list',
 
+  // 系统资源-内存
+  // 获取内存使用率
+  monitorMemUsageList: '/opt.api/monitor/mem/usage/list',
+
   // 反向代理
   // 获取服务设置
   proxyServiceSettingGet: '/opt.api/proxy/service/setting/get',

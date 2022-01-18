@@ -34,6 +34,10 @@
           <i class="el-icon-cpu"></i>
           <span slot="title">处理器</span>
         </el-menu-item>
+        <el-menu-item index="/monitor/mem/usage">
+          <i class="el-icon-notebook-2"></i>
+          <span slot="title">内存</span>
+        </el-menu-item>
       </el-submenu>
       <el-submenu index="/svc/custom">
         <template slot="title">

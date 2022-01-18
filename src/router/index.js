@@ -69,6 +69,10 @@ const routes = [
         component: () => import('../views/authorized/monitor/cpu/Index')
       },
       {
+        path: '/monitor/mem/usage',
+        component: () => import('../views/authorized/monitor/mem/Index')
+      },
+      {
         path: '/port/fwd/proxy',
         component: () => import('../views/authorized/proxy/Index')
       }

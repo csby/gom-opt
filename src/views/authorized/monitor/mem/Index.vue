@@ -1,15 +1,15 @@
 <template>
-  <monitorPage title="CPU">
+  <monitorPage title="内存">
     <div slot="info">
       <span style="padding-right: 5px;">:</span>
-      <span style="font-weight: bold;">{{info.cpuName}}</span>
+      <span style="font-weight: bold;">{{info.curUsed}} / {{info.curTotal}}</span>
     </div>
     <template slot="button">
       <el-tooltip placement="left">
         <div slot="content">
           <span>刷新</span>
         </div>
-        <el-button type="text" icon="el-icon-refresh" @click="doGetCpuUsageList"/>
+        <el-button type="text" icon="el-icon-refresh" @click="doGetMemUsageList"/>
       </el-tooltip>
     </template>
     <template slot="custom">
@@ -44,10 +44,11 @@ import MonitorPage from '@/components/monitor/Page'
 class Index extends SocketBase {
   info = {
     loading: false,
-    cpuName: '',
     maxCount: 0,
     curCount: 0,
     curPercent: '',
+    curTotal: '',
+    curUsed: '',
     min: 0,
     max: 100,
     labels: {
@@ -73,11 +74,30 @@ class Index extends SocketBase {
     }
   }
 
+  unit = {
+    kb: 1024,
+    mb: 1024 * 1024,
+    gb: 1024 * 1024 * 1024
+  }
+
+  fmtMemValue (v) {
+    const u = this.unit
+    if (v > u.gb) {
+      const val = v / u.gb
+      return val.toFixed(2) + 'GB'
+    } else if (v > u.mb) {
+      const val = v / u.mb
+      return val.toFixed(1) + 'MB'
+    } else {
+      return Math.round(v / u.kb) + 'KB'
+    }
+  }
+
   fmtValue (v) {
     return Math.round(v) + '%'
   }
 
-  onGetCpuUsageList (code, err, data) {
+  onGetMemUsageList (code, err, data) {
     this.info.loading = false
     this.info.cpuName = ''
     this.info.maxCount = 0
@@ -94,6 +114,8 @@ class Index extends SocketBase {
         for (let i = 0; i < c; i++) {
           const item = items[i]
           percents.push(item.usage)
+          this.info.curTotal = this.fmtMemValue(item.total)
+          this.info.curUsed = this.fmtMemValue(item.used)
         }
       }
     } else {
@@ -108,7 +130,7 @@ class Index extends SocketBase {
     }
   }
 
-  doGetCpuUsageList () {
+  doGetMemUsageList () {
     if (this.info.loading) {
       return
     }
@@ -116,11 +138,11 @@ class Index extends SocketBase {
     this.info.loading = true
     this.info.error.summary = ''
     this.info.error.detail = ''
-    this.post(this.$uris.monitorCpuUsageList, null, this.onGetCpuUsageList)
+    this.post(this.$uris.monitorMemUsageList, null, this.onGetMemUsageList)
   }
 
   onSocketMessage (id, data) {
-    if (id !== this.$evt.id.wsCpuUsage) {
+    if (id !== this.$evt.id.wsMemUsage) {
       return
     }
     if (this.info.curCount < 1) {
@@ -128,6 +150,8 @@ class Index extends SocketBase {
     }
 
     this.info.curPercent = this.fmtValue(data.usage)
+    this.info.curTotal = this.fmtMemValue(data.total)
+    this.info.curUsed = this.fmtMemValue(data.used)
     this.info.items[0].data.push(data.usage)
     if (this.info.items[0].data.length > this.info.maxCount) {
       this.info.items[0].data.shift()
@@ -135,7 +159,7 @@ class Index extends SocketBase {
   }
 
   mounted () {
-    this.doGetCpuUsageList()
+    this.doGetMemUsageList()
   }
 }
 
@@ -143,7 +167,7 @@ export default Index
 </script>
 
 <style scoped>
-  .trend {
-    height: 300px;
-  }
+.trend {
+  height: 300px;
+}
 </style>
