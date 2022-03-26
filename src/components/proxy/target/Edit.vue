@@ -13,6 +13,12 @@
         </td>
       </tr>
       <tr>
+        <td>路径:</td>
+        <td>
+          <el-input v-model="editInfo.target.path" placeholder="仅域名不为空的http协议有效" type="text" size="mini"/>
+        </td>
+      </tr>
+      <tr>
         <td class="required">目标地址:</td>
         <td>
           <el-input v-model="editInfo.target.ip" placeholder="IP地址或域名" type="text" size="mini"/>
@@ -126,6 +132,7 @@ class Edit extends VueBase {
     target: {
       id: '',
       domain: '',
+      path: '',
       ip: '',
       port: '',
       version: 0,
@@ -187,6 +194,7 @@ class Edit extends VueBase {
       if (this.info) {
         this.editInfo.target.id = this.info.id
         this.editInfo.target.domain = this.info.domain
+        this.editInfo.target.path = this.info.path
         this.editInfo.target.ip = this.info.ip
         this.editInfo.target.port = this.info.port
         this.editInfo.target.version = this.info.version
@@ -206,6 +214,7 @@ class Edit extends VueBase {
       } else {
         this.editInfo.target.id = ''
         this.editInfo.target.domain = ''
+        this.editInfo.target.path = ''
         this.editInfo.target.ip = ''
         this.editInfo.target.port = ''
         this.editInfo.target.version = 0

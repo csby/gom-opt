@@ -7,7 +7,8 @@
               :stripe="true"
               :max-height="320"
               :data="targets" >
-      <el-table-column prop="domain" label="域名" align="right" min-width="150px"/>
+      <el-table-column prop="domain" label="域名" align="right"/>
+      <el-table-column prop="path" label="路径"/>
       <el-table-column label="目标地址:目标端口" align="right" width="220">
         <div slot-scope="scope">
           <table class="table-target">
@@ -79,6 +80,7 @@ class Info extends SocketBase {
   editInfo = {
     id: '',
     domain: '',
+    path: '',
     ip: '',
     port: '',
     version: 0,
@@ -145,6 +147,7 @@ class Info extends SocketBase {
           for (let index = 0; index < count; index++) {
             if (data.target.id === this.targets[index].id) {
               this.targets[index].domain = data.target.domain
+              this.targets[index].path = data.target.path
               this.targets[index].ip = data.target.ip
               this.targets[index].port = data.target.port
               this.targets[index].version = data.target.version
