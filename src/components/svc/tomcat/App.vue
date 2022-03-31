@@ -33,7 +33,7 @@
           label="发布时间"
           prop="deployTime"
           width="135px" />
-      <el-table-column width="90px">
+      <el-table-column width="125px">
         <template slot="header">
           <el-button type="text" size="small" @click="mod.visible = true">上传</el-button>
         </template>
@@ -47,6 +47,7 @@
                          @confirm="doDelete(scope.row.name)">
             <el-button slot="reference" type="text" size="small">删除</el-button>
           </el-popconfirm>
+          <el-button type="text" size="small" @click="showDetailDlg(scope.row)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -62,6 +63,11 @@
         <el-input v-model="mod.forms[0].value" :readonly="true"/>
       </el-form-item>
     </fileUpload>
+
+    <fileDetail v-model="detail.visible"
+                title="应用程序详情"
+                :uri="detail.uri"
+                :argument="detail.args" />
   </el-card>
 </template>
 
@@ -69,10 +75,12 @@
 import Component from 'vue-class-component'
 import SocketBase from '@/components/SocketBase'
 import FileUpload from '@/components/dlg/FileUpload'
+import FileDetail from '@/components/svc/Detail'
 
 @Component({
   components: {
-    fileUpload: FileUpload
+    fileUpload: FileUpload,
+    fileDetail: FileDetail
   },
   props: {
     name: {
@@ -110,6 +118,15 @@ class App extends SocketBase {
     ]
   }
 
+  detail = {
+    visible: false,
+    uri: this.$uris.svcTomcatAppDetail,
+    args: {
+      name: '',
+      app: ''
+    }
+  }
+
   protocol = document.location.protocol
   host = this.$db.get(this.$db.keys.host)
   token = this.$db.get(this.$db.keys.token)
@@ -129,6 +146,16 @@ class App extends SocketBase {
 
   toDownloadUrl (app) {
     return this.protocol + '//' + this.host + this.downloadUri + this.name + '/' + app + '?token=' + this.token
+  }
+
+  showDetailDlg (row) {
+    if (!row) {
+      return
+    }
+
+    this.detail.args.name = this.name
+    this.detail.args.app = row.name
+    this.detail.visible = true
   }
 
   onDelete (code, err, data) {

@@ -166,7 +166,7 @@ class FileUpload extends VueBase {
       this.uploadColor = this.uploadColors.success
       this.statusMsg = '上传完成， 发布成功'
       this.$nextTick(function () {
-        this.$emit('onUploaded')
+        this.$emit('onUploaded', data)
       })
     } else {
       this.statusMsg = ''

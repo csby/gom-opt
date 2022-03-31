@@ -74,6 +74,8 @@ const uri = {
   svcCustomDownload: '/opt.api/svc/custom/download/',
   // 删除服务
   svcCustomDel: '/opt.api/svc/custom/del',
+  // 获取服务详细信息
+  svcCustomDetail: '/opt.api/svc/custom/app/detail',
   // 安装服务
   svcCustomInstall: '/opt.api/svc/custom/install',
   // 卸载服务
@@ -108,6 +110,8 @@ const uri = {
   svcTomcatAppMod: '/opt.api/svc/tomcat/app/mod',
   // 删除应用程序
   svcTomcatAppDel: '/opt.api/svc/tomcat/app/del',
+  // 获取应用程序序详细信息
+  svcTomcatAppDetail: '/opt.api/svc/tomcat/app/detail',
   // 获取配置列表
   svcTomcatCfgTree: '/opt.api/svc/tomcat/cfg/tree',
   // 新建应用配置文件夹
@@ -138,6 +142,30 @@ const uri = {
   svcOtherStop: '/opt.api/svc/other/svc/stop',
   // 重启服务
   svcOtherRestart: '/opt.api/svc/other/svc/restart',
+
+  // 系统服务-nginx
+  // 获取服务列表
+  svcNginxList: '/opt.api/svc/nginx/svc/list',
+  // 启动服务
+  svcNginxStart: '/opt.api/svc/nginx/svc/start',
+  // 停止服务
+  svcNginxStop: '/opt.api/svc/nginx/svc/stop',
+  // 重启服务
+  svcNginxRestart: '/opt.api/svc/nginx/svc/restart',
+  // 上传应用程序
+  svcNginxAppMod: '/opt.api/svc/nginx/app/mod',
+  // 获取站点程序详细信息
+  svcNginxAppDetail: '/opt.api/svc/nginx/app/detail',
+
+  // 系统服务-文件
+  // 查看文件内容: /opt.api/svc/file/content/:path
+  svcFileContent: '/opt.api/svc/file/content/',
+  // 下载文件: /opt.api/svc/file/download/:path
+  svcFileDownload: '/opt.api/svc/file/download/',
+  // 上传文件
+  svcFileMod: '/opt.api/svc/file/mod',
+  // 删除文件
+  svcFileDel: '/opt.api/svc/file/del',
 
   // 系统资源-磁盘
   // 获取磁盘分区信息

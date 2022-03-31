@@ -102,7 +102,7 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column width="125px">
+        <el-table-column width="160px">
           <template slot="header">
             <el-button type="text" size="small" @click="add.visible = true">添加新服务</el-button>
           </template>
@@ -114,6 +114,7 @@
               </el-button>
             </a>
             <el-button type="text" size="small" @click="doGetLogFileList(scope.row.name, scope.row.displayName)">日志</el-button>
+            <el-button type="text" size="small" @click="showDetailDlg(scope.row)">详情</el-button>
           </template>
         </el-table-column>
         <template slot="empty">
@@ -205,6 +206,11 @@
             </el-table>
           </div>
         </el-drawer>
+
+        <fileDetail v-model="detail.visible"
+                    title="服务详情"
+                    :uri="detail.uri"
+                    :argument="detail.args" />
       </div>
     </div>
   </svcPage>
@@ -215,11 +221,13 @@ import Component from 'vue-class-component'
 import SocketBase from '@/components/SocketBase'
 import FileUpload from '@/components/dlg/FileUpload'
 import SvcPage from '@/components/svc/Page'
+import FileDetail from '@/components/svc/Detail'
 
 @Component({
   components: {
     fileUpload: FileUpload,
-    svcPage: SvcPage
+    svcPage: SvcPage,
+    fileDetail: FileDetail
   }
 })
 class Index extends SocketBase {
@@ -287,6 +295,14 @@ class Index extends SocketBase {
     }
   }
 
+  detail = {
+    visible: false,
+    uri: this.$uris.svcCustomDetail,
+    args: {
+      name: ''
+    }
+  }
+
   protocol = document.location.protocol
   host = this.$db.get(this.$db.keys.host)
   token = this.$db.get(this.$db.keys.token)
@@ -316,6 +332,15 @@ class Index extends SocketBase {
 
   toViewerUrl (path) {
     return this.protocol + '//' + this.host + this.viewerUri + path + '?token=' + this.token
+  }
+
+  showDetailDlg (row) {
+    if (!row) {
+      return
+    }
+
+    this.detail.args.name = row.name
+    this.detail.visible = true
   }
 
   doMod (item) {

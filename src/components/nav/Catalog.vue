@@ -44,13 +44,17 @@
           <i class="el-icon-s-tools"></i>
           <span>系统服务</span>
         </template>
-        <el-menu-item index="/svc/custom">
-          <i class="el-icon-setting"></i>
-          <span slot="title">自定义</span>
-        </el-menu-item>
         <el-menu-item index="/svc/tomcat">
           <i class="el-icon-setting"></i>
           <span slot="title">tomcat</span>
+        </el-menu-item>
+        <el-menu-item index="/svc/nginx">
+          <i class="el-icon-setting"></i>
+          <span slot="title">nginx</span>
+        </el-menu-item>
+        <el-menu-item index="/svc/custom">
+          <i class="el-icon-setting"></i>
+          <span slot="title">自定义</span>
         </el-menu-item>
         <el-menu-item index="/svc/other">
           <i class="el-icon-setting"></i>

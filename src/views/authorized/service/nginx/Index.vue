@@ -1,5 +1,5 @@
 <template>
-  <svcPage title="tomcat服务" :count="itemCount">
+  <svcPage title="nginx服务" :count="itemCount">
     <template slot="button">
       <el-tooltip placement="left">
         <div slot="content">
@@ -19,46 +19,18 @@
                 :stripe="true">
         <el-table-column type="expand">
           <div slot-scope="scope" class="cell-expand">
-            <div class="cell-expand-info">
-              <div>
-                <span>服务名称:</span>
-                <span>{{scope.row.serviceName}}</span>
-              </div>
-              <div>
-                <span>应用目录:</span>
-                <span>{{scope.row.webApp}}</span>
-              </div>
-              <div>
-                <span>配置目录:</span>
-                <span>{{scope.row.webCfg}}</span>
-              </div>
-              <div>
-                <span>日志目录:</span>
-                <span>{{scope.row.webLog}}</span>
-              </div>
-              <div v-if="scope.row.webUrls" style="align-items: start;">
-                <span>访问地址:</span>
-                <div style="display: table; padding: 0;">
-                  <div v-for="(url, index) in scope.row.webUrls" :key="index" style="padding: 2px 0 5px 0;">
-                    <span/>
-                    <a :href="url" target="_blank">{{url}}</a>
-                  </div>
-                </div>
-              </div>
+            <div style="padding-left: 10px;">
+              <pre>{{scope.row.remark}}</pre>
             </div>
-            <el-row :gutter="5">
-              <el-col :span="14">
-                <svcApp :name="scope.row.serviceName" :max-height="cardHeight" />
-              </el-col>
-              <el-col :span="10">
-                <svcCfg :name="scope.row.serviceName" :max-height="cardHeight" />
-              </el-col>
-            </el-row>
+            <webApp :service="scope.row.serviceName" :items="scope.row.locations" />
           </div>
         </el-table-column>
         <el-table-column
-            label="项目"
+            label="项目名称"
             prop="name" />
+        <el-table-column
+            label="服务名称"
+            prop="serviceName" width="200px" />
         <el-table-column label="状态" width="100px">
           <template slot-scope="scope">
             <span v-if="scope.row.status === 1" class="status-running">运行中</span>
@@ -77,11 +49,6 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column width="60px">
-          <template slot-scope="scope">
-            <el-button type="text" size="small" @click="showLog(scope.row)">日志</el-button>
-          </template>
-        </el-table-column>
         <template slot="empty">
             <span v-if="isError" class="error">
                 <i class="el-icon-error"></i>
@@ -91,16 +58,6 @@
           <span v-else>暂无数据</span>
         </template>
       </el-table>
-
-      <el-drawer class="drawer" direction="rtl" size="720px"
-                 :show-close="false"
-                 :append-to-body="true"
-                 :destroy-on-close="true"
-                 :visible.sync="log.visible">
-        <div class="drawer-body">
-          <svcLog :name="log.name" :displayName="log.displayName" @close="log.visible = false" />
-        </div>
-      </el-drawer>
     </div>
   </svcPage>
 </template>
@@ -108,21 +65,16 @@
 <script>
 import Component from 'vue-class-component'
 import SocketBase from '@/components/SocketBase'
-import SvcApp from '@/components/svc/tomcat/App'
-import SvcCfg from '@/components/svc/tomcat/Cfg'
-import SvcLog from '@/components/svc/tomcat/Log'
 import SvcPage from '@/components/svc/Page'
+import WebApp from '@/views/authorized/service/nginx/App'
 
 @Component({
   components: {
-    svcApp: SvcApp,
-    svcCfg: SvcCfg,
-    svcLog: SvcLog,
-    svcPage: SvcPage
+    svcPage: SvcPage,
+    webApp: WebApp
   }
 })
 class Index extends SocketBase {
-  cardHeight = 200
   info = {
     loading: false,
     items: [],
@@ -133,15 +85,9 @@ class Index extends SocketBase {
   }
 
   act = {
-    start: this.$uris.svcTomcatStart,
-    stop: this.$uris.svcTomcatStop,
-    restart: this.$uris.svcTomcatRestart
-  }
-
-  log = {
-    visible: false,
-    name: '',
-    displayName: ''
+    start: this.$uris.svcNginxStart,
+    stop: this.$uris.svcNginxStop,
+    restart: this.$uris.svcNginxRestart
   }
 
   get itemCount () {
@@ -154,30 +100,6 @@ class Index extends SocketBase {
     } else {
       return false
     }
-  }
-
-  showLog (data) {
-    if (!data) {
-      return
-    }
-
-    this.log.name = data.serviceName
-    this.log.displayName = data.name
-    this.log.visible = true
-  }
-
-  onAction (code, err, data) {
-    if (code === 0) {
-    } else {
-      this.error(err)
-    }
-  }
-
-  doAction (name, uri) {
-    const argument = {
-      name: name
-    }
-    this.post(uri, argument, this.onAction)
   }
 
   onGetList (code, err, data) {
@@ -199,7 +121,7 @@ class Index extends SocketBase {
     this.info.loading = true
     this.info.error.summary = ''
     this.info.error.detail = ''
-    this.post(this.$uris.svcTomcatList, null, this.onGetList)
+    this.post(this.$uris.svcNginxList, null, this.onGetList)
   }
 
   onSocketMessage (id, data) {
@@ -244,32 +166,6 @@ export default Index
   }
 
   .cell-expand {
-    padding: 5px;
-  }
-  .cell-expand-info {
-    padding: 2px 4px 2px 55px;
-  }
-  .cell-expand-info div {
-    padding: 2px 0px;
-    display: flex;
-    align-items: center;
-  }
-  .cell-expand-info div :first-child {
-    text-align: right;
-    padding-right: 5px;
-    color: darkgray;
-  }
-
-  .drawer {
-  }
-  .drawer /deep/ .el-drawer__header{
-    background-color: #0078D7;
-    color: white;
-    padding: 0;
-    margin: 0;
-  }
-  .drawer /deep/ .el-drawer__body{
-    margin: 0;
-    padding: 0;
+    padding: 1px 2px 5px 48px;
   }
 </style>

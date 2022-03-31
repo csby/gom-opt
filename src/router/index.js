@@ -57,6 +57,10 @@ const routes = [
         component: () => import('../views/authorized/service/other/Index')
       },
       {
+        path: '/svc/nginx',
+        component: () => import('../views/authorized/service/nginx/Index')
+      },
+      {
         path: '/monitor/disk/partition',
         component: () => import('../views/authorized/monitor/disk/Index')
       },
