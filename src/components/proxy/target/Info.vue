@@ -9,20 +9,32 @@
               :data="targets" >
       <el-table-column prop="domain" label="域名" align="right"/>
       <el-table-column prop="path" label="路径"/>
-      <el-table-column label="目标地址:目标端口" align="right" width="220">
+      <el-table-column align="right" width="250">
+        <template slot="header">
+          <span>目标地址:目标端口</span>
+          <el-badge style="margin-left: 3px;" value="连接数量" type="info"/>
+        </template>
         <div slot-scope="scope">
-          <table class="table-target">
-            <tr>
-              <td>{{scope.row.ip}}</td>
-              <td>:{{scope.row.port}}</td>
-            </tr>
-            <template v-if="scope.row.spares" >
-              <tr v-for="(item, index) in scope.row.spares" :key="index">
-                <td>{{item.ip}}</td>
-                <td>:{{item.port}}</td>
-              </tr>
-            </template>
-          </table>
+          <div class="target-content">
+            <div style="flex: 1"/>
+            <div class="row">{{scope.row.ip}}</div>
+            <div class="row" style="padding: 0px 1px; font-weight: bold;">:</div>
+            <div class="row" style="width: 112px; text-align: left; padding-top: 2px;">
+              <span>{{scope.row.port}}</span>
+              <el-badge v-if="scope.row.alive" :value="scope.row.connCount" type="success"/>
+              <el-badge v-else :value="scope.row.connCount" type="info"/>
+            </div>
+          </div>
+          <div class="target-content" v-for="(item, index) in scope.row.spares" :key="index">
+            <div style="flex: 1"/>
+            <div class="row">{{item.ip}}</div>
+            <div class="row" style="padding: 0px 1px; font-weight: bold;">:</div>
+            <div class="row" style="width: 112px; text-align: left; padding-top: 2px;">
+              <span>{{item.port}}</span>
+              <el-badge v-if="item.alive" :value="item.connCount" type="success" />
+              <el-badge v-else :value="item.connCount" type="info" />
+            </div>
+          </div>
         </div>
       </el-table-column>
       <el-table-column prop="version" label="版本" width="55"/>
@@ -146,6 +158,9 @@ class Info extends SocketBase {
           const count = this.targets.length
           for (let index = 0; index < count; index++) {
             if (data.target.id === this.targets[index].id) {
+              this.targets[index].addrId = data.target.addrId
+              this.targets[index].alive = data.target.alive
+              this.targets[index].connCount = data.target.connCount
               this.targets[index].domain = data.target.domain
               this.targets[index].path = data.target.path
               this.targets[index].ip = data.target.ip
@@ -172,6 +187,59 @@ class Info extends SocketBase {
             if (data.targetId === this.targets[index].id) {
               this.targets.splice(index, 1)
               this.fireTargetCountChanged()
+            }
+          }
+        }
+      }
+    } else if (id === this.$evt.id.wsReviseProxyServiceStatus) {
+      if (data) {
+        if (data.status !== 2) {
+          if (this.targets) {
+            const c = this.targets.length
+            for (let i = 0; i < c; i++) {
+              const target = this.targets[i]
+              if (target) {
+                target.alive = false
+                const spares = target.spares
+                if (spares) {
+                  for (let j = 0; j < spares.length; j++) {
+                    spares[j].alive = false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } else if (id === this.$evt.id.wsReviseProxyTargetStatusChanged) {
+      if (data) {
+        if (data.sourceId === this.serverId) {
+          if (this.targets) {
+            const c = this.targets.length
+            for (let i = 0; i < c; i++) {
+              const target = this.targets[i]
+              if (target) {
+                if (target.id !== data.targetId) {
+                  continue
+                }
+                if (target.addrId === data.addrId) {
+                  target.alive = data.alive
+                  target.connCount = data.count
+                  break
+                }
+
+                const spares = target.spares
+                if (spares) {
+                  for (let j = 0; j < spares.length; j++) {
+                    const spare = spares[j]
+                    if (spare.addrId === data.addrId) {
+                      spare.alive = data.alive
+                      spare.connCount = data.count
+                      break
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -208,6 +276,19 @@ export default Info
 }
 .btn .el-button:not(:first-child) {
   margin-left: 5px;
+}
+
+.target-content {
+  display: flex;
+  align-items: center;
+}
+.target-content .row {
+  display: table-cell;
+  vertical-align: center;
+}
+.target-content .row .el-badge {
+  padding: 0;
+  margin: 0px 0px 0px 3px;
 }
 
 .table-target {

@@ -88,7 +88,10 @@ const ids = {
   wsReviseProxyTargetDel: 3022,
   // 反向代理修改目标地址
   // data: {"serverId":"99b1d5cfba734176a68f1521d704f022","target":{"id":"76cacef32eac4ebe9d8aa575b28f409b","domain":"test.com","ip":"172.16.99.70","port":"443","version":1,"disable":false}}
-  wsReviseProxyTargetMod: 3023
+  wsReviseProxyTargetMod: 3023,
+  // 反向代理修改目标地址
+  // data: {"sourceId":"99b1d5cfba734176a68f1521d704f022","targetId":"", "addrId":"","alive":false,"count":0}}
+  wsReviseProxyTargetStatusChanged: 3031
 }
 
 export default {
