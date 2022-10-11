@@ -18,6 +18,9 @@ import ProxyConnection from '@/components/proxy/Connection'
   }
 })
 class Index extends SocketBase {
+  mounted() {
+    this.$nextTick(this.fireRoutePathChanged)
+  }
 }
 
 export default Index

@@ -7,12 +7,11 @@
       <slot name="info" />
       <div>
         <slot name="button" :action="doGetList"/>
-        <el-tooltip placement="left" v-show="isNotNullOrEmpty(uri)">
-          <div slot="content">
-            <span>刷新</span>
-          </div>
-          <el-button type="text" icon="el-icon-refresh" @click="doGetList"/>
-        </el-tooltip>
+        <el-button v-show="isNotNullOrEmpty(uri)"
+                   type="text"
+                   icon="el-icon-refresh"
+                   :loading="info.loading"
+                   @click="doGetList">刷新</el-button>
       </div>
     </div>
     <div class="table" v-show="isNotNullOrEmpty(uri)">
@@ -122,8 +121,8 @@ class Page extends VueBase {
 
   onSizeChanged () {
     const clientHeight = window.innerHeight ||
-        document.documentElement.clientHeight ||
-        document.body.clientHeight
+      document.documentElement.clientHeight ||
+      document.body.clientHeight
 
     const paddingHeight = 1
     this.heights.client = clientHeight - paddingHeight
@@ -191,11 +190,10 @@ export default Page
     padding: 0px 8px;
     background-color: #f8f8f8;
   }
-  .header /deep/ .el-button {
+  .header :deep(.el-button) {
     padding: 0px 2px;
     margin-top: 0px;
     margin-bottom: 0px;
-    font-size: medium;
   }
   .header :not(:first-child) {
     margin-left: 3px;
@@ -217,15 +215,15 @@ export default Page
 
   .table {
   }
-  .table /deep/ .el-table th.el-table__cell {
+  .table :deep(.el-table th.el-table__cell) {
     padding: 2px 0px;
     margin: 0;
   }
-  .table /deep/ .el-table--small td {
+  .table :deep(.el-table--small td) {
     padding: 0;
     margin: 0;
   }
-  .table /deep/ .el-button {
+  .table :deep(.el-button) {
     padding: 1px 8px 0px 0px;
     margin: 0;
   }

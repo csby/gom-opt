@@ -5,8 +5,8 @@ import Net from '@/network/net'
 import Evt from '@/event/bus'
 import App from './App.vue'
 import router from './router'
-import 'element-ui/lib/theme-chalk/index.css'
 import TrendChart from 'vue-trend-chart'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(VueClipboard)
 Vue.use(ElementUI)

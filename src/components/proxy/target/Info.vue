@@ -4,9 +4,10 @@
               size="small"
               width="100%"
               :border="true"
-              :stripe="true"
+              :stripe="false"
               :max-height="320"
               :data="targets" >
+      <el-table-column type="index" label="序号" align="right"/>
       <el-table-column prop="domain" label="域名" align="right"/>
       <el-table-column prop="path" label="路径"/>
       <el-table-column align="right" width="250">
@@ -258,9 +259,13 @@ export default Info
 <style scoped>
 .root {
 }
-.root /deep/ .el-table--small td {
+.root :deep(.el-table--small td) {
   padding: 0;
   margin: 0;
+}
+.root :deep(.el-table--small tr th) {
+  padding: 2px 0;
+  background-color: #f8f8f8;
 }
 .content {
   border-top: 1px solid #ebeef5;

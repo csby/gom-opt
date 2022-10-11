@@ -45,20 +45,28 @@ const routes = [
         component: Dashboard
       },
       {
-        path: '/svc/custom',
-        component: () => import('../views/authorized/service/custom/Index')
+        path: '/cloud/node',
+        component: () => import('../views/authorized/cloud/node/Index')
       },
       {
-        path: '/svc/tomcat',
-        component: () => import('../views/authorized/service/tomcat/Index')
+        path: '/cloud/fwd',
+        component: () => import('../views/authorized/cloud/fwd/Index')
       },
       {
-        path: '/svc/other',
-        component: () => import('../views/authorized/service/other/Index')
+        path: '/node',
+        component: () => import('../views/authorized/node/Index')
       },
       {
-        path: '/svc/nginx',
-        component: () => import('../views/authorized/service/nginx/Index')
+        path: '/user/local',
+        component: () => import('../views/authorized/user/local/Index')
+      },
+      {
+        path: '/user/online',
+        component: () => import('../views/authorized/user/online/Index')
+      },
+      {
+        path: '/user/ldap',
+        component: () => import('../views/authorized/user/ldap/Index')
       },
       {
         path: '/monitor/disk/partition',
@@ -79,6 +87,22 @@ const routes = [
       {
         path: '/port/fwd/proxy',
         component: () => import('../views/authorized/proxy/Index')
+      },
+      {
+        path: '/svc/custom',
+        component: () => import('../views/authorized/service/custom/Index')
+      },
+      {
+        path: '/svc/tomcat',
+        component: () => import('../views/authorized/service/tomcat/Index')
+      },
+      {
+        path: '/svc/other',
+        component: () => import('../views/authorized/service/other/Index')
+      },
+      {
+        path: '/svc/nginx',
+        component: () => import('../views/authorized/service/nginx/Index')
       }
     ]
   },

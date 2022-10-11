@@ -21,21 +21,17 @@
       <div class="not-first">
         <monitorNetworkInterfaces />
       </div>
-      <div class="not-first">
-        <monitorNetworkListening />
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Component from 'vue-class-component'
-import VueBase from '@/components/VueBase'
+import RoutingBase from '@/components/RoutingBase'
 import SvcInfo from '@/components/svc/opt/Info'
 import UpdInfo from '@/components/svc/upd/Info'
 import MonitorHost from '@/components/monitor/host/Host'
 import MonitorNetworkInterfaces from '@/components/monitor/network/Interface'
-import MonitorNetworkListening from '@/components/monitor/network/Listening'
 import SiteRoot from '@/components/site/root/Info'
 import SiteApps from '@/components/site/app/Apps'
 
@@ -45,12 +41,11 @@ import SiteApps from '@/components/site/app/Apps'
     updInfo: UpdInfo,
     monitorHost: MonitorHost,
     monitorNetworkInterfaces: MonitorNetworkInterfaces,
-    monitorNetworkListening: MonitorNetworkListening,
     siteRoot: SiteRoot,
     siteApps: SiteApps
   }
 })
-class Dashboard extends VueBase {
+class Dashboard extends RoutingBase {
 
 }
 
@@ -61,7 +56,7 @@ export default Dashboard
 .dashboard {
   display: flex;
   align-items: flex-start;
-  padding: 6px;
+  padding-bottom: 5px;
 }
 
 .dashboard .fill {

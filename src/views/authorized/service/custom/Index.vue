@@ -3,9 +3,15 @@
     <template slot="button">
       <el-tooltip placement="left">
         <div slot="content">
+          <span>外壳程序</span>
+        </div>
+        <el-button type="text" icon="el-icon-help" @click="showShell"/>
+      </el-tooltip>
+      <el-tooltip placement="left">
+        <div slot="content">
           <span>刷新</span>
         </div>
-        <el-button type="text" icon="el-icon-refresh" @click="doGetList"/>
+        <el-button type="text" icon="el-icon-refresh" :loading="info.loading" @click="doGetList"/>
       </el-tooltip>
     </template>
     <div class="table" slot-scope="page">
@@ -144,6 +150,7 @@
         <fileUpload v-model="mod.visible"
                     width="580px"
                     labelWidth="100px"
+                    key="service"
                     :title="'上传并更新自定义系统服务: ' + mod.displayName"
                     :forms="mod.forms"
                     :uri="mod.uri">
@@ -211,6 +218,52 @@
                     title="服务详情"
                     :uri="detail.uri"
                     :argument="detail.args" />
+
+        <drawer v-model="shell.visible"
+                :element-height="elementHeight"
+                :modal="true"
+                size="420px">
+          <template slot="title">
+            <i class="el-icon-help"></i>
+            <span>外壳程序</span>
+            <el-tooltip :content="cfg.info.downloadTitle" placement="top" v-show="cfg.info.downloadUrl.length > 0">
+              <a :href="cfg.info.downloadUrl" target="_blank" style="margin: 4px 0px 0px 8px; color: #C6E2FF">
+                <i class="el-icon-download" />
+              </a>
+            </el-tooltip>
+          </template>
+          <template slot="button">
+            <el-button type="text" icon="el-icon-upload" @click="shell.update.visible = true"/>
+            <el-button type="text" icon="el-icon-refresh" :loading="shell.loading" @click="doGetShellInfo"/>
+          </template>
+          <div>
+            <div class="row">
+              <span>模块名称:</span>
+              <span>{{shell.info.name}}</span>
+            </div>
+            <div class="row">
+              <span>更新时间:</span>
+              <span>{{shell.info.deployTime}}</span>
+            </div>
+            <div class="row">
+              <span>版本号:</span>
+              <span>{{shell.info.version}}</span>
+            </div>
+          </div>
+        </drawer>
+
+        <fileUpload v-model="shell.update.visible"
+                    width="580px"
+                    labelWidth="100px"
+                    key="shell"
+                    title="上传并更新服务外壳程序"
+                    :uri="shell.update.uri" @onUploaded="onShellUploaded">
+          <div>
+            <div>
+              <span>压缩包中必须包含程序文件gshell(或gshell.exe)</span>
+            </div>
+          </div>
+        </fileUpload>
       </div>
     </div>
   </svcPage>
@@ -222,15 +275,27 @@ import SocketBase from '@/components/SocketBase'
 import FileUpload from '@/components/dlg/FileUpload'
 import SvcPage from '@/components/svc/Page'
 import FileDetail from '@/components/svc/Detail'
+import Drawer from '@/components/Drawer'
 
 @Component({
   components: {
     fileUpload: FileUpload,
     svcPage: SvcPage,
-    fileDetail: FileDetail
+    fileDetail: FileDetail,
+    drawer: Drawer
   }
 })
 class Index extends SocketBase {
+  cfg = {
+    info: {
+      app: '',
+      log: '',
+      logRetainDays: 0,
+      downloadTitle: '',
+      downloadUrl: ''
+    }
+  }
+
   info = {
     port: false,
     loading: false,
@@ -300,6 +365,25 @@ class Index extends SocketBase {
     uri: this.$uris.svcCustomDetail,
     args: {
       name: ''
+    }
+  }
+
+  shell = {
+    visible: false,
+    loading: false,
+    info: {
+      name: '',
+      version: '',
+      deployTime: ''
+    },
+    error: {
+      code: 0,
+      summary: '',
+      detail: ''
+    },
+    update: {
+      visible: false,
+      uri: this.$uris.svcCustomShellUpdate
     }
   }
 
@@ -395,6 +479,42 @@ class Index extends SocketBase {
     this.post(this.$uris.svcCustomLogFileList, argument, this.onGetLogFileList)
   }
 
+  onShellUploaded () {
+    this.doGetShellInfo()
+    this.shell.update.visible = false
+  }
+
+  showShell () {
+    this.shell.visible = true
+    this.doGetShellInfo()
+  }
+
+  onGetShellInfo (code, err, data) {
+    this.shell.loading = false
+    this.shell.error.code = code
+
+    if (code === 0) {
+      this.shell.info.name = data.name
+      this.shell.info.version = data.version
+      this.shell.info.deployTime = data.deployTime
+    } else {
+      this.shell.error.summary = err.summary
+      this.shell.error.detail = err.detail
+    }
+  }
+
+  doGetShellInfo () {
+    if (this.shell.loading) {
+      return
+    }
+
+    this.shell.loading = true
+    this.shell.error.code = 0
+    this.shell.error.summary = ''
+    this.shell.error.detail = ''
+    this.post(this.$uris.svcCustomShellInfo, null, this.onGetShellInfo)
+  }
+
   onGetList (code, err, data) {
     this.info.loading = false
     if (code === 0) {
@@ -415,6 +535,21 @@ class Index extends SocketBase {
     this.info.error.summary = ''
     this.info.error.detail = ''
     this.post(this.$uris.svcCustomList, null, this.onGetList)
+  }
+
+  onGetCfg (code, err, data) {
+    if (code === 0) {
+      this.cfg.info.app = data.app
+      this.cfg.info.log = data.log
+      this.cfg.info.logRetainDays = data.logRetainDays
+      this.cfg.info.downloadTitle = data.downloadTitle
+      this.cfg.info.downloadUrl = data.downloadUrl
+    } else {
+    }
+  }
+
+  doGetCfg () {
+    this.post(this.$uris.svcCustomCfgInfoGet, null, this.onGetCfg)
   }
 
   onSocketMessage (id, data) {
@@ -469,7 +604,9 @@ class Index extends SocketBase {
   }
 
   mounted () {
+    this.$nextTick(this.fireRoutePathChanged)
     this.doGetList()
+    this.doGetCfg()
   }
 }
 
@@ -479,15 +616,15 @@ export default Index
 <style scoped>
   .table {
   }
-  .table /deep/ .el-table th.el-table__cell {
+  .table :deep(.el-table th.el-table__cell) {
     padding: 2px 0px;
     margin: 0;
   }
-  .table /deep/ .el-table--small td {
+  .table :deep(.el-table--small td) {
     padding: 0;
     margin: 0;
   }
-  .table /deep/ .el-button {
+  .table :deep(.el-button) {
     padding: 1px 8px 0px 0px;
     margin: 0;
   }
@@ -506,14 +643,14 @@ export default Index
 
   .drawer {
   }
-  .drawer /deep/ .el-drawer__header{
+  .drawer :deep(.el-drawer__header){
     background-color: #0078D7;
     color: white;
     padding: 2px 10px;
     margin-bottom: 0px;
     margin-top: 0px;
   }
-  .drawer /deep/ .el-drawer__body{
+  .drawer :deep(.el-drawer__body){
     margin: 0;
     padding: 0;
     min-height: calc(100% - 30px);
@@ -525,7 +662,7 @@ export default Index
     display: flex;
     align-items: center;
   }
-  .drawer-header /deep/ .el-button {
+  .drawer-header :deep(.el-button) {
     padding: 0px 3px;
     font-size: medium;
     color: #f2f2f2;
@@ -539,5 +676,19 @@ export default Index
   }
   .drawer-body{
     min-height: 100%;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0px 0px 10px;
+    font-size: small;
+  }
+  .row span:first-child {
+    font-weight: lighter;
+    padding-right: 5px;
+  }
+  .row span:last-child {
+    font-weight: bold;
   }
 </style>

@@ -220,6 +220,7 @@ class Index extends SocketBase {
   }
 
   mounted () {
+    this.$nextTick(this.fireRoutePathChanged)
     this.doGetList()
   }
 }
@@ -230,15 +231,15 @@ export default Index
 <style scoped>
   .table {
   }
-  .table /deep/ .el-table th.el-table__cell {
+  .table :deep(.el-table th.el-table__cell) {
     padding: 2px 0px;
     margin: 0;
   }
-  .table /deep/ .el-table--small td {
+  .table :deep(.el-table--small td) {
     padding: 0;
     margin: 0;
   }
-  .table /deep/ .el-button {
+  .table :deep(.el-button) {
     padding: 1px 8px 0px 0px;
     margin: 0;
   }
@@ -262,13 +263,13 @@ export default Index
 
   .drawer {
   }
-  .drawer /deep/ .el-drawer__header{
+  .drawer :deep(.el-drawer__header){
     background-color: #0078D7;
     color: white;
     padding: 0;
     margin: 0;
   }
-  .drawer /deep/ .el-drawer__body{
+  .drawer :deep(.el-drawer__body){
     margin: 0;
     padding: 0;
   }

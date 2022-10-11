@@ -4,44 +4,40 @@
                :argument="argument"
                :tableRowClass="tableRowClassName">
     <template slot="button" slot-scope="button">
-      <el-tooltip placement="left">
-        <div slot="content">
-          <span>是否显示全部</span>
-        </div>
-        <el-checkbox v-model="argument.all" @change="button.action()" />
-      </el-tooltip>
+      <span style="font-weight: lighter;">显示全部</span>
+      <el-checkbox v-model="argument.all" @change="button.action()"></el-checkbox>
     </template>
     <el-table-column
-        label="分区"
-        prop="path" />
+      label="分区"
+      prop="path" />
     <el-table-column
-        label="磁盘空间"
-        prop="totalText"
-        width="130px" />
+      label="磁盘空间"
+      prop="totalText"
+      width="130px" />
     <el-table-column
-        label="已用空间大小"
-        prop="usedText"
-        width="120px" />
+      label="已用空间大小"
+      prop="usedText"
+      width="120px" />
     <el-table-column
-        label="已用空间 (%)"
-        prop="usedPercent"
-        width="100px"
-        :formatter="fmtUsedPercent" />
+      label="已用空间 (%)"
+      prop="usedPercent"
+      width="100px"
+      :formatter="fmtUsedPercent" />
     <el-table-column
-        label="可用空间大小"
-        prop="freeText"
-        width="120px" />
+      label="可用空间大小"
+      prop="freeText"
+      width="120px" />
     <el-table-column
-        label="可用空间 (%)"
-        prop="usedPercent"
-        width="100px"
-        :formatter="fmtFreePercent" />
+      label="可用空间 (%)"
+      prop="usedPercent"
+      width="100px"
+      :formatter="fmtFreePercent" />
   </monitorPage>
 </template>
 
 <script>
 import Component from 'vue-class-component'
-import VueBase from '@/components/VueBase'
+import RoutingBase from '@/components/RoutingBase'
 import MonitorPage from '@/components/monitor/Page'
 
 @Component({
@@ -49,7 +45,7 @@ import MonitorPage from '@/components/monitor/Page'
     monitorPage: MonitorPage
   }
 })
-class Index extends VueBase {
+class Index extends RoutingBase {
   argument = {
     all: false
   }

@@ -5,12 +5,7 @@
       <span style="font-weight: bold;">{{info.cpuName}}</span>
     </div>
     <template slot="button">
-      <el-tooltip placement="left">
-        <div slot="content">
-          <span>刷新</span>
-        </div>
-        <el-button type="text" icon="el-icon-refresh" @click="doGetCpuUsageList"/>
-      </el-tooltip>
+      <el-button type="text" icon="el-icon-refresh" :loading="info.loading" @click="doGetCpuUsageList">刷新</el-button>
     </template>
     <template slot="custom">
       <div>
@@ -135,7 +130,13 @@ class Index extends SocketBase {
   }
 
   mounted () {
+    this.$nextTick(this.fireRoutePathChanged)
     this.doGetCpuUsageList()
+    this.sendSocketMessage(this.$evt.id.wsCpuUsage, true)
+  }
+
+  beforeDestroy () {
+    this.sendSocketMessage(this.$evt.id.wsCpuUsage, false)
   }
 }
 
@@ -143,7 +144,7 @@ export default Index
 </script>
 
 <style scoped>
-  .trend {
-    height: 300px;
-  }
+.trend {
+  height: 300px;
+}
 </style>

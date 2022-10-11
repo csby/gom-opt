@@ -19,52 +19,7 @@
           :head="heights.head"
           :action="doAction"/>
 
-    <el-drawer class="drawer"
-               direction="rtl"
-               size="360px"
-               :append-to-body="true"
-               :destroy-on-close="true"
-               :visible.sync="port.visible">
-      <div slot="title" class="drawer-header">
-        <i class="el-icon-s-opportunity"></i>
-        <span>监听端口</span>
-        <el-badge class="badge" type="info" :value="port.count" v-if="port.count > 0"/>
-        <el-button type="text" icon="el-icon-refresh" @click="doSearch"/>
-      </div>
-      <tableList class="content"
-                 ref="tableList"
-                 :uri="port.uri"
-                 size="small"
-                 :border="false"
-                 :max-height="heights.client - heights.top"
-                 @searched="onSearched">
-        <template slot="columns">
-          <el-table-column
-              label="序号"
-              type="index"
-              width="55"
-              align="right">
-          </el-table-column>
-          <el-table-column
-              prop="address"
-              label="地址"
-              align="right">
-          </el-table-column>
-          <el-table-column
-              prop="port"
-              label="端口"
-              width="85px"
-              align="left">
-          </el-table-column>
-          <el-table-column
-              prop="protocol"
-              label="协议"
-              width="65px"
-              align="left">
-          </el-table-column>
-        </template>
-      </tableList>
-    </el-drawer>
+    <port-viewer v-model="port.visible" />
   </div>
 </template>
 
@@ -72,10 +27,12 @@
 import Component from 'vue-class-component'
 import VueBase from '@/components/VueBase'
 import TableList from '@/components/TableList'
+import PortViewer from '@/components/monitor/network/ListeningDrawer'
 
 @Component({
   components: {
-    tableList: TableList
+    tableList: TableList,
+    portViewer: PortViewer
   },
   props: {
     icon: {
@@ -94,9 +51,7 @@ import TableList from '@/components/TableList'
 })
 class Page extends VueBase {
   port = {
-    visible: false,
-    count: 0,
-    uri: this.$uris.monitorListenPorts
+    visible: false
   }
 
   heights = {
@@ -128,14 +83,6 @@ class Page extends VueBase {
     this.post(uri, argument, this.onAction)
   }
 
-  onSearched (data) {
-    if (data) {
-      this.port.count = data.length
-    } else {
-      this.port.count = 0
-    }
-  }
-
   doSearch () {
     this.$refs.tableList.doSearch()
   }
@@ -161,7 +108,7 @@ export default Page
     padding: 0px 8px;
     background-color: #f8f8f8;
   }
-  .header /deep/ .el-button {
+  .header :deep(.el-button) {
     padding: 0px 2px;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -184,7 +131,7 @@ export default Page
 
   .drawer {
   }
-  .drawer /deep/ .el-drawer__header{
+  .drawer :deep(.el-drawer__header){
     background-color: #0078D7;
     color: white;
     height: 26px;
@@ -192,11 +139,11 @@ export default Page
     margin-bottom: 0px;
     margin-top: 0px;
   }
-  .drawer /deep/ .el-drawer__body{
+  .drawer :deep(.el-drawer__body){
     margin: 0;
     padding: 0;
   }
-  .drawer /deep/ .el-table--small td {
+  .drawer :deep(.el-table--small td) {
     padding: 0;
     margin: 0;
   }
@@ -205,7 +152,7 @@ export default Page
     display: flex;
     align-items: center;
   }
-  .drawer-header /deep/ .el-button {
+  .drawer-header :deep(.el-button) {
     padding: 0px 3px;
     font-size: medium;
     color: #f2f2f2;

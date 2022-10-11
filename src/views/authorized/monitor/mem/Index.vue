@@ -5,12 +5,7 @@
       <span style="font-weight: bold;">{{info.curUsed}} / {{info.curTotal}}</span>
     </div>
     <template slot="button">
-      <el-tooltip placement="left">
-        <div slot="content">
-          <span>刷新</span>
-        </div>
-        <el-button type="text" icon="el-icon-refresh" @click="doGetMemUsageList"/>
-      </el-tooltip>
+      <el-button type="text" icon="el-icon-refresh" :loading="info.loading" @click="doGetMemUsageList">刷新</el-button>
     </template>
     <template slot="custom">
       <div>
@@ -159,7 +154,13 @@ class Index extends SocketBase {
   }
 
   mounted () {
+    this.$nextTick(this.fireRoutePathChanged)
     this.doGetMemUsageList()
+    this.sendSocketMessage(this.$evt.id.wsMemUsage, true)
+  }
+
+  beforeDestroy () {
+    this.sendSocketMessage(this.$evt.id.wsMemUsage, false)
   }
 }
 
