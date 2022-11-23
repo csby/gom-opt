@@ -18,7 +18,7 @@
     </tr>
     <tr valign="middle">
       <td colspan="2" class="password">
-        <el-input placeholder="请输秘密"
+        <el-input placeholder="请输密码"
                   v-model="passwordVal"
                   ref="password"
                   :clearable="true"

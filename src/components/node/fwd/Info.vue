@@ -1,61 +1,63 @@
 <template>
-  <el-card :body-style="bodyStyle">
+  <el-card :body-style="bodyStyle" shadow="never">
     <div slot="header" class="header">
       <div>
         <i class="el-icon-share" ></i>
         <span>端口转发</span>
       </div>
       <div>
-        <el-tooltip placement="left">
+        <div >
+          <el-tooltip placement="left">
+            <div slot="content">
+              <span>刷新</span>
+            </div>
+            <el-button type="text" icon="el-icon-refresh" @click="doRefresh"/>
+          </el-tooltip>
+        </div>
+        <el-tooltip placement="top">
           <div slot="content">
             <span>监听端口</span>
           </div>
-          <el-button type="text" icon="el-icon-s-opportunity" @click="port.visible = true"/>
-        </el-tooltip>
-      </div>
-      <div >
-        <el-tooltip placement="top">
-          <div slot="content">
-            <span>刷新</span>
-          </div>
-          <el-button style="padding: 2px 5px;" type="text" icon="el-icon-refresh" @click="doRefresh"/>
+          <el-button style="padding: 2px 5px;" type="text" icon="el-icon-s-opportunity" @click="port.visible = true"/>
         </el-tooltip>
       </div>
     </div>
     <div>
-      <div class="item">
-        <span>启用状态:</span>
-        <div>
-          <template v-if="info.enable">
-            <span>已启用</span>
-            <el-button size="small" type="primary" :plain="true" :loading="act.enable.submitting" @click="doSetEnableState(false)">禁 用</el-button>
-          </template>
-          <template v-else>
-            <span style="color: #909399;">已禁用</span>
-            <el-button size="small" type="primary" :plain="true" :loading="act.enable.submitting" @click="doSetEnableState(true)">启 用</el-button>
-          </template>
+      <div>
+        <div class="item">
+          <span>启用状态:</span>
+          <div>
+            <template v-if="info.enable">
+              <span>已启用</span>
+              <el-button size="small" type="primary" :plain="true" :loading="act.enable.submitting" @click="doSetEnableState(false)">禁 用</el-button>
+            </template>
+            <template v-else>
+              <span style="color: #909399;">已禁用</span>
+              <el-button size="small" type="primary" :plain="true" :loading="act.enable.submitting" @click="doSetEnableState(true)">启 用</el-button>
+            </template>
+          </div>
         </div>
-      </div>
-      <div class="item">
-        <span>运行状态:</span>
-        <div>
-          <template v-if="info.running">
-            <span style="color: #67C23A;">运行中</span>
-            <el-button size="small" type="primary" :plain="true" :loading="act.running.submitting" @click="doStop">停 止</el-button>
-          </template>
-          <template v-else>
-            <span style="color: #909399;">已停止</span>
-            <el-button size="small" type="primary" :plain="true" :loading="act.running.submitting" @click="doStart">启 动</el-button>
-          </template>
+        <div class="item">
+          <span>运行状态:</span>
+          <div>
+            <template v-if="info.running">
+              <span style="color: #67C23A;">运行中</span>
+              <el-button size="small" type="primary" :plain="true" :loading="act.running.submitting" @click="doStop">停 止</el-button>
+            </template>
+            <template v-else>
+              <span style="color: #909399;">已停止</span>
+              <el-button size="small" type="primary" :plain="true" :loading="act.running.submitting" @click="doStart">启 动</el-button>
+            </template>
+          </div>
         </div>
-      </div>
-      <div class="item">
-        <span>条目列表:</span>
-        <el-badge class="badge" type="info" :value="itemCount" v-if="itemCount > 0"/>
-        <div style="flex: 1;"></div>
-        <el-button size="small" type="primary" :plain="true" style="margin-bottom: 3px;" @click="showDb">
-          <span>查看SQL Server实例信息</span>
-        </el-button>
+        <div class="item">
+          <span>条目列表:</span>
+          <el-badge class="badge" type="info" :value="itemCount" v-if="itemCount > 0"/>
+          <div style="flex: 1;"></div>
+          <el-button size="small" type="primary" :plain="true" style="margin-bottom: 3px;" @click="showDb">
+            <span>查看SQL Server实例信息</span>
+          </el-button>
+        </div>
       </div>
       <el-table v-loading="info.loading"
                 aelement-loading-text="加载中..."
@@ -77,58 +79,59 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="序号"
-          type="index"
-          width="50"
-          align="right" />
+            label="序号"
+            type="index"
+            width="50"
+            align="right" />
         <el-table-column
-          label="名称"
-          prop="name"  />
+            label="名称"
+            prop="name"
+            :show-overflow-tooltip="true"/>
         <el-table-column
-          label="协议"
-          prop="protocol"
-          width="65px"  />
+            label="协议"
+            prop="protocol"
+            width="65px"  />
         <el-table-column
-          label="监听地址"
-          prop="listenAddress"
-          width="95px"
-          align="right" />
+            label="监听地址"
+            prop="listenAddress"
+            width="120px"
+            align="right" />
         <el-table-column
-          label="监听端口"
-          prop="listenPort"
-          width="80px" />
+            label="监听端口"
+            prop="listenPort"
+            width="80px" />
         <el-table-column
-          label="目标节点"
-          prop="targetNodeName"
-          width="205px"
-          align="right"/>
+            label="目标节点"
+            prop="targetNodeName"
+            width="205px"
+            align="right"/>
         <el-table-column
-          label="目标地址"
-          prop="targetAddress"
-          width="155px"
-          align="right" />
+            label="目标地址"
+            prop="targetAddress"
+            width="155px"
+            align="right" />
         <el-table-column
-          label="目标端口"
-          prop="targetPort"
-          width="75px" />
+            label="目标端口"
+            prop="targetPort"
+            width="75px" />
         <el-table-column
-          label="启用状态"
-          width="75px" >
+            label="启用状态"
+            width="75px" >
           <template slot-scope="scope">
-              <span v-if="scope.row.enable">已启用</span>
-              <span v-else style="color: #909399;">已禁用</span>
+            <span v-if="scope.row.enable">已启用</span>
+            <span v-else style="color: #909399;">已禁用</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="运行状态"
-          width="75px" >
+            label="运行状态"
+            width="75px" >
           <template slot-scope="scope">
             <span v-if="scope.row.running" style="color: #67C23A;">运行中</span>
             <span v-else style="color: #909399;">已停止</span>
           </template>
         </el-table-column>
         <el-table-column width="105px">
-          <template slot="header" slot-scope="scope">
+          <template slot="header">
             <el-button type="text" size="small" @click="add.visible = true">
               <span>添加新端口</span>
             </el-button>
@@ -506,77 +509,81 @@ export default Info
 </script>
 
 <style scoped>
-  .el-card :deep(.el-card__header) {
-    background-color: #f8f8f8;
-    padding: 1px 3px;
-  }
-  .header {
-    display: flex;
-    align-items: center;
-  }
-  .header div {
-    display: flex;
-    align-items: center;
-  }
+.el-card :deep(.el-card__header) {
+  background-color: #f8f8f8;
+  padding: 1px 3px;
+}
+.header {
+  display: flex;
+  align-items: center;
+}
+.header div {
+  display: flex;
+  align-items: center;
+}
 
-  .header div:first-child {
-    flex: 1;
-  }
-  .header div:first-child i {
-    width: 30px;
-    text-align: center;
-  }
+.header div:first-child {
+  flex: 1;
+}
+.header div:first-child i {
+  width: 30px;
+  text-align: center;
+}
+.header :deep(.el-button) {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 
-  .el-card :deep(.el-table__header-wrapper tr th) {
-    background-color: #f8f8f8;
-    padding: 2px 0px 1px 0px;
-  }
-  .el-card :deep(.el-table--small td) {
-    padding: 1px 0px 0px 0px;
-    margin: 0;
-  }
-  .el-table :deep(.el-button) {
-    padding: 0;
-  }
-  .el-table :deep(.el-popconfirm) {
-    padding: 0;
-  }
+.el-card :deep(.el-table__header-wrapper tr th) {
+  background-color: #f8f8f8;
+  padding: 2px 0px 1px 0px;
+}
+.el-card :deep(.el-table--small td) {
+  padding: 1px 0px 0px 0px;
+  margin: 0;
+}
+.el-table :deep(.el-button) {
+  padding: 0;
+}
+.el-table :deep(.el-popconfirm) {
+  padding: 0;
+}
 
-  .item {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-    font-size: 13px;
-  }
-  .item span:first-child {
-    padding-left: 14px;
-  }
-  .item div span:first-child {
-    font-weight: bold;
-    padding-left: 3px;
-    margin-right: 10px;
-  }
-  .item div .el-button {
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
+.item {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  font-size: 13px;
+}
+.item span:first-child {
+  padding-left: 14px;
+}
+.item div span:first-child {
+  font-weight: bold;
+  padding-left: 3px;
+  margin-right: 10px;
+}
+.item div .el-button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 
-  .table {
-    margin-top: 5px;
-  }
-  .table :deep(.el-table--small td) {
-    padding: 0;
-    margin: 0;
-  }
-  .table :deep(.el-table--small tr th) {
-    padding: 0;
-  }
-  .table :deep(.el-table__empty-block) {
-    min-height: 0;
-    width: 96%;
-  }
-  .table :deep(.el-table__empty-text) {
-    width: 100%;
-    text-align: left;
-  }
+.table {
+  margin-top: 5px;
+}
+.table :deep(.el-table--small td) {
+  padding: 0;
+  margin: 0;
+}
+.table :deep(.el-table--small tr th) {
+  padding: 0;
+}
+.table :deep(.el-table__empty-block) {
+  min-height: 0;
+  width: 96%;
+}
+.table :deep(.el-table__empty-text) {
+  width: 100%;
+  text-align: left;
+}
 </style>
